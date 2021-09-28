@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HealthCheck</string>
+    <string name="choose_options">Please choose a health check option</string>
+    <string name="about_icon">About icon</string>
+    <string name="about_app">About app</string>
+    <string name="history_icon">History icon</string>
+    <string name="history_drop_down">History</string>
 </resources>

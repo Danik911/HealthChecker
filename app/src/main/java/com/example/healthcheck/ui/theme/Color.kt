@@ -2,7 +2,14 @@ package com.example.healthcheck.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Pink500 = Color(0xFFf48fb1)
+val Pink200 = Color(0xFFffc1e3)
+val Pink700 = Color(0xFFbf5f82)
+
+val Purple500 = Color(0xFF9575cd)
+val Purple200 = Color(0xFFc7a4ff)
+val Purple700 = Color(0xFF65499c)
+
+val HealthyWeight = Color(0xFF00C980)
+val LowOverWeight = Color(0xFFFFC114)
+val Obesity = Color(0XFFFF4646)
