@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">HealthCheck</string>
-    <string name="choose_options">Please choose a health check option</string>
+    <string name="choose_options">Check your health!</string>
     <string name="about_icon">About icon</string>
     <string name="about_app">About app</string>
     <string name="history_icon">History icon</string>
     <string name="history_drop_down">History</string>
+    <string name="options_screen_text">You may choose one of the available tests</string>
+    <string name="bmi_button_text">Check you BMI</string>
+    <string name="home_icon">Home icon</string>
+    <string name="param_screen_app_bar">Please enter parameters</string>
+    <string name="high_hint">High</string>
+    <string name="weight_hint">Weight</string>
+    <string name="heart_logo">Heart logo</string>
 </resources>

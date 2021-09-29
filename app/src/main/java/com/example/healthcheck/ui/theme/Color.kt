@@ -1,5 +1,7 @@
 package com.example.healthcheck.ui.theme
 
+import androidx.compose.material.Colors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val Pink500 = Color(0xFFf48fb1)
@@ -13,3 +15,11 @@ val Purple700 = Color(0xFF65499c)
 val HealthyWeight = Color(0xFF00C980)
 val LowOverWeight = Color(0xFFFFC114)
 val Obesity = Color(0XFFFF4646)
+
+val Colors.surfaceColor: Color
+    @Composable
+    get() = if (isLight) Pink200 else Purple700
+
+val Colors.splashScreenBackgroundColor: Color
+    @Composable
+    get() = if (isLight) Purple200 else Color.Black

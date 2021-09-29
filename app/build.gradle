@@ -65,8 +65,11 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-    // Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha09")
+    // Compose dependencies
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01"
+    implementation "androidx.navigation:navigation-compose:2.4.0-alpha09"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
 
     // Room components
     implementation "androidx.room:room-runtime:2.3.0"
@@ -77,12 +80,17 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Dagger - Hilt
-    implementation "com.google.dagger:hilt-android:2.37"
-    kapt "com.google.dagger:hilt-android-compiler:2.36"
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    kapt "com.google.dagger:hilt-android-compiler:2.37"
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     //Accompanist Navigation Animation
     implementation "com.google.accompanist:accompanist-navigation-animation:0.18.0"
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
