@@ -10,18 +10,18 @@ import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.splashComposable(
-    navigateToOptionsScreen: () -> Unit
-){
+    navigateToOptionScreen: () -> Unit
+) {
     composable(
         route = SPLASH_SCREEN,
         exitTransition = { _, _ ->
             slideOutVertically(
-                targetOffsetY = {fullHeight -> fullHeight },
+                targetOffsetY = {fullHeight -> -fullHeight },
                 animationSpec = tween(durationMillis = 300)
             )
         }
-
-    ){
-        SplashScreen(navigateToOptionsScreen = navigateToOptionsScreen)
+    )
+    {
+        SplashScreen(navigateToOptionsScreen = navigateToOptionScreen)
     }
 }

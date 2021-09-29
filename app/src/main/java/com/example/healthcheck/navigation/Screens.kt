@@ -7,17 +7,13 @@ import com.example.healthcheck.util.Constants.SPLASH_SCREEN
 
 class Screens(navController: NavHostController) {
     val splash: () -> Unit = {
-        navController.navigate(route = OPTIONS_SCREEN){
-            popUpTo(SPLASH_SCREEN){
-                inclusive = true
-            }
+        navController.navigate(route = "options"){
+            popUpTo(SPLASH_SCREEN){inclusive = true}
         }
     }
     val options: () -> Unit = {
-        navController.navigate(route = PARAM_SCREEN)
+        navController.navigate(route = "param")
     }
-    val param: () -> Unit = {
-        navController.navigate(route = "")
-    }
+
 
 }
