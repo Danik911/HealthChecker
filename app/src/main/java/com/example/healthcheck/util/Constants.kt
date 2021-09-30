@@ -9,4 +9,7 @@ object Constants {
     const val OPTIONS_SCREEN = "options"
     const val PARAM_SCREEN = "param"
     const val SPLASH_SCREEN = "splash"
+    const val RESULT_SCREEN = "result/{bmi}"
+
+    const val RESULT_ARGUMENT_KEY = "bmi"
 }

@@ -15,3 +15,4 @@ data class BmiResult(
     val timestamp: Long
 
 )
+class InvalidParametersException(message: String): Exception(message)

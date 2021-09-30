@@ -5,7 +5,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,18 +15,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.healthcheck.R
-import com.example.healthcheck.components.OptionsAppBar
 import com.example.healthcheck.ui.theme.LARGE_SPACER
 import com.example.healthcheck.ui.theme.surfaceColor
+import timber.log.Timber
 
 @Composable
 fun ParamScreen(
-
-    viewModel: ParamViewModel = hiltViewModel()
-
+    viewModel: ParamViewModel = hiltViewModel(),
+    navigateToResultScreen: (Float) -> Unit,
+    navigateToHome: () -> Unit
 ) {
 
     val weight by viewModel.weightState
@@ -38,12 +36,12 @@ fun ParamScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            ParamAppBar {
+            ParamAppBar (navigateToHome = navigateToHome)
 
-            }
+
         },
         content = {
-            ParamContent(
+            ParamContent(viewModel = viewModel,
                 weight = weight,
                 high = high,
                 onHighChange = {high ->
@@ -51,6 +49,14 @@ fun ParamScreen(
                 },
                 onWeightChange = {weight ->
                     viewModel.weightState.value = weight
+                },
+                onSubmitClicked = {
+                    //Calculate fist, otherwise you will send 0 value to savedStateHandle
+                    viewModel.calculateBmiIndex()
+                    navigateToResultScreen(viewModel.bmiResult.value)
+                    Timber.d("submit clicked")
+
+
                 }
             )
         }
@@ -59,10 +65,10 @@ fun ParamScreen(
 }
 
 @Composable
-fun ParamAppBar(onHomeClicked: () -> Unit) {
+fun ParamAppBar(navigateToHome: () -> Unit) {
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = { onHomeClicked() }) {
+            IconButton(onClick = { navigateToHome() }) {
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = stringResource(id = R.string.home_icon)
@@ -80,7 +86,9 @@ fun ParamContent(
     weight: String,
     high: String,
     onHighChange: (String) -> Unit,
-    onWeightChange: (String) -> Unit
+    onWeightChange: (String) -> Unit,
+    onSubmitClicked: (result:Float) -> Unit,
+    viewModel: ParamViewModel
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -102,6 +110,10 @@ fun ParamContent(
                 high = high,
                 onHighChange = onHighChange
             )
+            Spacer(modifier = Modifier.height(LARGE_SPACER))
+
+            SubmitButton (onSubmitClicked = onSubmitClicked, viewModel = viewModel)
+
         }
 
     }
@@ -156,17 +168,24 @@ fun SharedTextField(
         )
     )
 }
+@Composable
+fun SubmitButton(onSubmitClicked: (result:Float) -> Unit, viewModel: ParamViewModel){
+    
+    Button(onClick = {onSubmitClicked(viewModel.bmiResult.value)}) {
+        Text(text = stringResource(id = R.string.submit_button))        
+    }
+}
 
 @Composable
 @Preview
-private fun ParamAppBarPreview() {
-    ParamScreen(
-
-    )
+private fun ParamScreenPreview() {
+    val testViewModel = ParamViewModel()
+    ParamScreen(testViewModel, {}, {})
 }
 
+/*
 @Composable
 @Preview
 private fun SharedTextFieldPreview() {
     SharedTextField("Weigh", {}, "")
-}
+}*/

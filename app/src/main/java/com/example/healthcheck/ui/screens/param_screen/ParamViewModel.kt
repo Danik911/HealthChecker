@@ -4,14 +4,21 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
-class ParamViewModel @Inject constructor (): ViewModel(){
+class ParamViewModel @Inject constructor() : ViewModel() {
 
     val highState: MutableState<String> = mutableStateOf("")
     val weightState: MutableState<String> = mutableStateOf("")
 
+    val bmiResult: MutableState<Float> = mutableStateOf(0f)
 
+    fun calculateBmiIndex() {
+        Timber.d("calculate triggered")
+       bmiResult.value = highState.value.toFloat() + weightState.value.toFloat()
+        Timber.d("$bmiResult")
+    }
 }

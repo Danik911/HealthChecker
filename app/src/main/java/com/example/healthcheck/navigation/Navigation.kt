@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import com.example.healthcheck.navigation.destinations.optionComposable
+import com.example.healthcheck.navigation.destinations.paramComposable
+import com.example.healthcheck.navigation.destinations.resultComposable
 import com.example.healthcheck.navigation.destinations.splashComposable
 import com.example.healthcheck.util.Constants.SPLASH_SCREEN
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -14,7 +16,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 @ExperimentalMaterialApi
 @Composable
 fun Navigation(
-    navController: NavHostController
+    navController: NavHostController,
 
 ) {
     val screen = remember(navController) {
@@ -25,7 +27,12 @@ fun Navigation(
         navController = navController,
         startDestination = SPLASH_SCREEN
     ) {
-        splashComposable(navigateToOptionScreen = screen.splash)
-        optionComposable (navigateToParamScreen = screen.options)
+        splashComposable(navigateToOptionScreen = screen.toOptions)
+        optionComposable(navigateToParamScreen = screen.toParam)
+        paramComposable(
+            navigateToResultScreen = screen.toResult,
+            navigateToHomeScreen = screen.toOptions
+        )
+        resultComposable(navigateToHomeScreen = screen.toOptions)
     }
 }
