@@ -1,5 +1,7 @@
 package com.example.healthcheck.ui.screens.param_screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -11,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -19,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.healthcheck.R
 import com.example.healthcheck.ui.theme.LARGE_SPACER
 import com.example.healthcheck.ui.theme.surfaceColor
+import com.example.healthcheck.util.isValidNumber
 import timber.log.Timber
 
 @Composable
@@ -32,11 +36,13 @@ fun ParamScreen(
     val high by viewModel.highState
     val scaffoldState = rememberScaffoldState()
 
+    val context = LocalContext.current
+
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            ParamAppBar (navigateToHome = navigateToHome)
+            ParamAppBar(navigateToHome = navigateToHome)
 
 
         },
@@ -44,24 +50,29 @@ fun ParamScreen(
             ParamContent(viewModel = viewModel,
                 weight = weight,
                 high = high,
-                onHighChange = {high ->
+                onHighChange = { high ->
                     viewModel.highState.value = high
                 },
-                onWeightChange = {weight ->
+                onWeightChange = { weight ->
                     viewModel.weightState.value = weight
                 },
                 onSubmitClicked = {
-                    //Calculate fist, otherwise you will send 0 value to savedStateHandle
-                    viewModel.calculateBmiIndex()
-                    navigateToResultScreen(viewModel.bmiResult.value)
-                    Timber.d("submit clicked")
-
+                    if (weight.isNotBlank() && high.isNotBlank()) {
+                        if (weight.isValidNumber() && high.isValidNumber()) {
+                            viewModel.calculateBmiIndex()
+                            navigateToResultScreen(viewModel.bmiResult.value)
+                            Timber.d("submit clicked")
+                        } else {
+                            displayToastInvalid(context = context)
+                        }
+                    } else {
+                        displayToastEmpty(context = context)
+                    }
 
                 }
             )
         }
     )
-
 }
 
 @Composable
@@ -87,7 +98,7 @@ fun ParamContent(
     high: String,
     onHighChange: (String) -> Unit,
     onWeightChange: (String) -> Unit,
-    onSubmitClicked: (result:Float) -> Unit,
+    onSubmitClicked: (result: Float) -> Unit,
     viewModel: ParamViewModel
 ) {
     Surface(
@@ -112,7 +123,7 @@ fun ParamContent(
             )
             Spacer(modifier = Modifier.height(LARGE_SPACER))
 
-            SubmitButton (onSubmitClicked = onSubmitClicked, viewModel = viewModel)
+            SubmitButton(onSubmitClicked = onSubmitClicked, viewModel = viewModel)
 
         }
 
@@ -168,12 +179,29 @@ fun SharedTextField(
         )
     )
 }
+
 @Composable
-fun SubmitButton(onSubmitClicked: (result:Float) -> Unit, viewModel: ParamViewModel){
-    
-    Button(onClick = {onSubmitClicked(viewModel.bmiResult.value)}) {
-        Text(text = stringResource(id = R.string.submit_button))        
+fun SubmitButton(onSubmitClicked: (result: Float) -> Unit, viewModel: ParamViewModel) {
+
+    Button(onClick = { onSubmitClicked(viewModel.bmiResult.value) }) {
+        Text(text = stringResource(id = R.string.submit_button))
     }
+}
+
+fun displayToastEmpty(context: Context) {
+    Toast.makeText(
+        context,
+        R.string.toast_empty_fields,
+        Toast.LENGTH_SHORT
+    ).show()
+}
+
+fun displayToastInvalid(context: Context) {
+    Toast.makeText(
+        context,
+        R.string.toast_invalid_parameters_fields,
+        Toast.LENGTH_SHORT
+    ).show()
 }
 
 @Composable

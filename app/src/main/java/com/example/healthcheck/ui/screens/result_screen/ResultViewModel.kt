@@ -21,7 +21,7 @@ class ResultViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Float>(RESULT_ARGUMENT_KEY)?.let { result ->
-            if (result.isNaN() || result < 1) {
+            if (result.isNaN()) {
                throw InvalidParametersException(" Invalid parameters")
             } else {
                 viewModelScope.launch {

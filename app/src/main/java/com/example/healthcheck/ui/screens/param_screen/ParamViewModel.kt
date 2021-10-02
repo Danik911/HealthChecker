@@ -16,9 +16,10 @@ class ParamViewModel @Inject constructor() : ViewModel() {
 
     val bmiResult: MutableState<Float> = mutableStateOf(0f)
 
-    fun calculateBmiIndex() {
-        Timber.d("calculate triggered")
-       bmiResult.value = highState.value.toFloat() + weightState.value.toFloat()
-        Timber.d("$bmiResult")
+    fun calculateBmiIndex()  {
+
+        bmiResult.value =
+            weightState.value.toFloat() / (highState.value.toFloat() * highState.value.toFloat())
+
     }
 }

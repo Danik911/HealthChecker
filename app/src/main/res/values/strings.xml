@@ -14,5 +14,7 @@
     <string name="heart_logo">Heart logo</string>
     <string name="submit_button">Submit</string>
     <string name="result_app_bar">You result</string>
+    <string name="toast_empty_fields">Fields are empty</string>
+    <string name="toast_invalid_parameters_fields">You should enter numbers</string>
 
 </resources>
