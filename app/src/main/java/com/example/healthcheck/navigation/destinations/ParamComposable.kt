@@ -11,7 +11,7 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalMaterialApi
 fun NavGraphBuilder.paramComposable(
     navigateToHomeScreen: () -> Unit,
-    navigateToResultScreen: (Float) -> Unit
+    navigateToResultScreen: (Long) -> Unit
 
     ) {
     composable(

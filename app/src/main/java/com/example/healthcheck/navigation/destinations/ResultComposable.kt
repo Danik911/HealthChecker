@@ -23,7 +23,7 @@ fun NavGraphBuilder.resultComposable(
     composable(
         route = RESULT_SCREEN,
         arguments = listOf(navArgument(RESULT_ARGUMENT_KEY){
-            type = NavType.FloatType
+            type = NavType.LongType
         }),
         enterTransition = {_, _ ->
             slideInHorizontally(
@@ -36,6 +36,8 @@ fun NavGraphBuilder.resultComposable(
 
 
     ) {
+        //navBackStackEntry ->
+        //val bmiMeasurementId = navBackStackEntry.arguments!!.getInt
         ResultScreen (navigateToHomeScreen = navigateToHomeScreen)
 
     }

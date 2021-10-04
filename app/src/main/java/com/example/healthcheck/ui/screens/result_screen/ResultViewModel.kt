@@ -5,30 +5,39 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthcheck.data.models.InvalidParametersException
-import com.example.healthcheck.util.Constants.RESULT_ARGUMENT_KEY
+import com.example.healthcheck.data.models.BmiMeasurement
+import com.example.healthcheck.data.models.Diagnosis
+import com.example.healthcheck.data.repositories.BmiResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ResultViewModel @Inject constructor(
-   savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: BmiResultRepository
 ) : ViewModel() {
 
-    private val _resultState = mutableStateOf(0f)
-    val resultState: State<Float> = _resultState
+    private val _latestBmiMeasurement = mutableStateOf(
+        BmiMeasurement(
+            0,
+            "",
+            0L,
+            diagnosis = Diagnosis.NormalWeight,
+            0f
+        )
+    )
+    val latestBmiMeasurement: State<BmiMeasurement> = _latestBmiMeasurement
 
-    init {
-        savedStateHandle.get<Float>(RESULT_ARGUMENT_KEY)?.let { result ->
-            if (result.isNaN()) {
-               throw InvalidParametersException(" Invalid parameters")
-            } else {
-                viewModelScope.launch {
-                    _resultState.value = result
-                }
+
+    fun getTheLatestTask() {
+        viewModelScope.launch {
+            repository.getTheLatestBmiMeasurement.collect { bmiMeasurement ->
+                _latestBmiMeasurement.value = bmiMeasurement
             }
         }
+
     }
 }
 

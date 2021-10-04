@@ -1,7 +1,7 @@
 package com.example.healthcheck.data.repositories
 
 import com.example.healthcheck.data.BmiDao
-import com.example.healthcheck.data.models.BmiResult
+import com.example.healthcheck.data.models.BmiMeasurement
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -9,19 +9,22 @@ import javax.inject.Inject
 @ViewModelScoped
 class BmiResultRepository @Inject constructor(private val bmiDao: BmiDao){
 
-    val getAllBmiResults: Flow<List<BmiResult>> = bmiDao.getAllBmiResults()
+    val getAllBmiResults: Flow<List<BmiMeasurement>> = bmiDao.getAllBmiResults()
 
-    fun getSelectedBmiResult(bmiId: Int): Flow<BmiResult>{
+    val getTheLatestBmiMeasurement: Flow<BmiMeasurement> = bmiDao.getTheLatestBmiMeasurement()
+
+    fun getSelectedBmiResult(bmiId: Int): Flow<BmiMeasurement>{
         return bmiDao.getSelectedBmiResult(bmiId = bmiId)
         }
-    suspend fun addBmiResult(bmiResult: BmiResult){
-        bmiDao.addBmiResult(bmiResult = bmiResult)
+    suspend fun addBmiResult(bmiMeasurement: BmiMeasurement){
+        bmiDao.addBmiResult(bmiMeasurement = bmiMeasurement)
         }
-    suspend fun deleteBmiResult(bmiResult: BmiResult){
-        bmiDao.deleteBmiResult(bmiResult = bmiResult)
+    suspend fun deleteBmiResult(bmiMeasurement: BmiMeasurement){
+        bmiDao.deleteBmiResult(bmiMeasurement = bmiMeasurement)
     }
     suspend fun deleteAllBmiResults(){
         bmiDao.deleteAllBmiResults()
     }
+
 
 }

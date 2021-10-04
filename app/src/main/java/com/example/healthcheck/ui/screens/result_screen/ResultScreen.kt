@@ -2,12 +2,13 @@ package com.example.healthcheck.ui.screens.result_screen
 
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -23,6 +24,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.healthcheck.data.models.BmiMeasurement
+import com.example.healthcheck.data.models.Diagnosis
+import com.example.healthcheck.ui.theme.Pink200
+import com.example.healthcheck.ui.theme.SMALL_PADDING
+import com.example.healthcheck.util.round
 
 @Composable
 fun ResultScreen(
@@ -30,10 +36,12 @@ fun ResultScreen(
     viewModel: ResultViewModel = hiltViewModel()
 ) {
 
-    val result = viewModel.resultState.value
-
-
+    val latestBmiMeasurement by viewModel.latestBmiMeasurement
     val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = latestBmiMeasurement){
+        viewModel.getTheLatestTask()
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -43,33 +51,44 @@ fun ResultScreen(
 
         },
         content = {
-            //Text(text = result.toString())
-            CircularResultProgressBar(percentage = 1f, number = result)
+
+            ResultContent(latestBmiMeasurement = latestBmiMeasurement)
 
         }
     )
 }
 
 @Composable
-fun ResultContent(result: String) {
-    Text(text = result)
+fun ResultContent(latestBmiMeasurement: BmiMeasurement) {
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Pink200,
+        elevation = SMALL_PADDING
+    ) {
+        CircularResultProgressBar ( latestBmiMeasurement = latestBmiMeasurement)
+    }
+
 }
 
 @Composable
 fun CircularResultProgressBar(
-    percentage: Float,
-    number: Float,
     fontSize: TextUnit = 28.sp,
-    radius: Dp = 50.dp,
-    color: Color = Color.Green,
+    radius: Dp = 70.dp,
     strokedWidth: Dp = 8.dp,
     animationDuration: Int = 1000,
-    animationDelay: Int = 0
+    animationDelay: Int = 0,
+    latestBmiMeasurement: BmiMeasurement
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
     }
     val currentPercentage = remember { Animatable(0f) }
+
+    val percentage: Float = latestBmiMeasurement.diagnosis.angle
+    val color: Color = latestBmiMeasurement.diagnosis.color
+    val result = latestBmiMeasurement.bmiIndex
+
 
     LaunchedEffect(percentage) {
         currentPercentage.animateTo(
@@ -99,7 +118,7 @@ fun CircularResultProgressBar(
 
         }
         Text(
-            text = (currentPercentage.value * number).toString(),
+            text = result.round(),
             color = Color.Black,
             fontSize = fontSize,
             fontWeight = FontWeight.Bold
@@ -107,9 +126,21 @@ fun CircularResultProgressBar(
     }
 
 }
+
 @Composable
 @Preview
-fun ResultScreenPreview(){
-    ResultScreen(navigateToHomeScreen = {})
+fun ContentResultScreenPreview() {
+    ResultContent(BmiMeasurement(
+        0,
+        "",
+        0L,
+        diagnosis = Diagnosis.NormalWeight,
+        0f
+    ))
+}
+@Composable
+@Preview
+fun ResultScreenPreview() {
+    ResultScreen({  })
 }
 

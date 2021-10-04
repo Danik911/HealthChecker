@@ -14,7 +14,7 @@ class Screens(navController: NavHostController) {
     val toParam: () -> Unit = {
         navController.navigate(route = PARAM_SCREEN)
     }
-    val toResult: (Float) -> Unit = { result ->
+    val toResult: (Long) -> Unit = { result ->
         navController.navigate(route = "result/$result")
     }
 

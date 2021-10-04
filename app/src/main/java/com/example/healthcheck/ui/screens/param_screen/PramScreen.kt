@@ -8,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.healthcheck.R
@@ -28,13 +31,15 @@ import timber.log.Timber
 @Composable
 fun ParamScreen(
     viewModel: ParamViewModel = hiltViewModel(),
-    navigateToResultScreen: (Float) -> Unit,
+    navigateToResultScreen: (Long) -> Unit,
     navigateToHome: () -> Unit
 ) {
 
     val weight by viewModel.weightState
     val high by viewModel.highState
     val scaffoldState = rememberScaffoldState()
+
+    val currentMeasurement by viewModel.currentMeasurement.collectAsState()
 
     val context = LocalContext.current
 
@@ -60,8 +65,9 @@ fun ParamScreen(
                     if (weight.isNotBlank() && high.isNotBlank()) {
                         if (weight.isValidNumber() && high.isValidNumber()) {
                             viewModel.calculateBmiIndex()
-                            navigateToResultScreen(viewModel.bmiResult.value)
-                            Timber.d("submit clicked")
+                            viewModel.addBmiMeasurement()
+                            navigateToResultScreen(currentMeasurement.timestamp)
+
                         } else {
                             displayToastInvalid(context = context)
                         }
@@ -175,7 +181,8 @@ fun SharedTextField(
         ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Number
         )
     )
 }
@@ -207,8 +214,8 @@ fun displayToastInvalid(context: Context) {
 @Composable
 @Preview
 private fun ParamScreenPreview() {
-    val testViewModel = ParamViewModel()
-    ParamScreen(testViewModel, {}, {})
+    //val testViewModel = ParamViewModel()
+    //ParamScreen(testViewModel, {}, {})
 }
 
 /*
