@@ -16,7 +16,7 @@ import com.example.healthcheck.ui.theme.SMALL_PADDING
 
 
 @Composable
-fun ResultAppBar(navigateToHome: () -> Unit) {
+fun ResultAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navigateToHome() }) {
@@ -29,7 +29,7 @@ fun ResultAppBar(navigateToHome: () -> Unit) {
         title = { Text(text = stringResource(id = R.string.result_app_bar)) },
         actions = {
             HistoryAction {
-                //TODO()
+               navigateToList()
             }
         }
 
@@ -70,7 +70,5 @@ fun HistoryAction(onHistoryClicked: () -> Unit) {
 @Composable
 @Preview
 private fun ResultAppBarPreview() {
-    ResultAppBar {
-
-    }
+    ResultAppBar ({},{})
 }

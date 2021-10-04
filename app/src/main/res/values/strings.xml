@@ -16,5 +16,6 @@
     <string name="result_app_bar">You result</string>
     <string name="toast_empty_fields">Fields are empty</string>
     <string name="toast_invalid_parameters_fields">You should enter numbers</string>
+    <string name="bmi_measurement_result">You result is %1$s\n Your BIM is %2$s</string>
 
 </resources>

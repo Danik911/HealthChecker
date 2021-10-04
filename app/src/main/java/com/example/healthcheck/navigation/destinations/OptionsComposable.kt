@@ -11,13 +11,15 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalMaterialApi
 fun NavGraphBuilder.optionComposable(
     navigateToParamScreen: () -> Unit,
+    navigateToListScreen: () -> Unit,
 
     ) {
     composable(
         route = OPTIONS_SCREEN,
     ) {
         OptionsScreen(
-            navigateToParamScreen = navigateToParamScreen
+            navigateToParamScreen = navigateToParamScreen,
+            navigateToListScreen = navigateToListScreen
         )
     }
 }

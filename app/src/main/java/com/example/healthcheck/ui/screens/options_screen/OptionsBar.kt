@@ -1,8 +1,6 @@
 package com.example.healthcheck.components
 
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
@@ -14,18 +12,15 @@ import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.healthcheck.R
-import com.example.healthcheck.ui.theme.LARGE_PADDING
 import com.example.healthcheck.ui.theme.LARGE_SPACER
 import com.example.healthcheck.ui.theme.SMALL_PADDING
-import org.intellij.lang.annotations.JdkConstants
 
 
 @Composable
 fun OptionsAppBar(
     onAboutClicked: () -> Unit,
-    onHistoryClicked: () -> Unit
+    navigateToList: () -> Unit
 ) {
     TopAppBar(
         navigationIcon = {
@@ -37,7 +32,7 @@ fun OptionsAppBar(
                 TitleText()
         },
         actions = {
-            HistoryAction(onHistoryClicked = onHistoryClicked)
+            HistoryAction(navigateToList = navigateToList)
         }
     )
 }
@@ -76,7 +71,7 @@ fun AboutAction(
 }
 
 @Composable
-fun HistoryAction(onHistoryClicked: () -> Unit) {
+fun HistoryAction(navigateToList: () -> Unit) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -92,7 +87,7 @@ fun HistoryAction(onHistoryClicked: () -> Unit) {
         ) {
             DropdownMenuItem(onClick = {
                 expanded = false
-                onHistoryClicked()
+                navigateToList()
             }
             ) {
 
@@ -114,7 +109,7 @@ fun TitleText(){
 @Composable
 @Preview
 private fun AppBarPreview() {
-    OptionsAppBar({}, {})
+    OptionsAppBar({}) {}
 
 }
         
