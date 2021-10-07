@@ -22,7 +22,6 @@ class ResultViewModel @Inject constructor(
     private val _latestBmiMeasurement = mutableStateOf(
         BmiMeasurement(
             0,
-            "",
             0L,
             diagnosis = Diagnosis.NormalWeight,
             0f

@@ -10,7 +10,10 @@ object Constants {
     const val PARAM_SCREEN = "param"
     const val SPLASH_SCREEN = "splash"
     const val RESULT_SCREEN = "result/{bmi}"
-    const val LIST_SCREEN = "list"
+    const val LIST_SCREEN = "list/{event}"
+    const val DETAILS_SCREEN = "details/{bmiId}"
 
     const val RESULT_ARGUMENT_KEY = "bmi"
+    const val DETAILS_ARGUMENT_KEY = "bmiId"
+    const val LIST_ARGUMENT_KEY = "event"
 }

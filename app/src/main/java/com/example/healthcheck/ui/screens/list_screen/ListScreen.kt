@@ -4,11 +4,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ListScreen(
-    //navigateToBmiMeasurement: (BmiId: Int) -> Unit,
+    navigateToBmiMeasurement: (BmiId: Int) -> Unit,
     viewModel: ListViewModel = hiltViewModel()
 ) {
 
@@ -16,14 +18,21 @@ fun ListScreen(
         viewModel.getAllBmiMeasurements()
     }
 
+    val allBmiMeasurement by viewModel.allBmiMeasurement.collectAsState()
+
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
 
-        topBar = { TODO()},
+        topBar = {},
 
-        content = { TODO()}
+        content = {
+           ListContent(
+               measurements = allBmiMeasurement,
+               navigateToBmiMeasurement = navigateToBmiMeasurement
+           )
+        }
     )
 
 }

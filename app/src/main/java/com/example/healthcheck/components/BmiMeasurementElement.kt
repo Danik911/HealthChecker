@@ -17,6 +17,7 @@ import com.example.healthcheck.data.models.BmiMeasurement
 import com.example.healthcheck.data.models.Diagnosis
 import com.example.healthcheck.ui.theme.SMALL_PADDING
 import com.example.healthcheck.ui.theme.SMALL_SPACER
+import com.example.healthcheck.util.round
 
 @Composable
 fun BmiElement(bmiMeasurement: BmiMeasurement) {
@@ -58,7 +59,7 @@ fun BmiIndex(bmiMeasurement: BmiMeasurement) {
         ) {
         Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
             Text(
-                text = bmiMeasurement.bmiIndex.toString(),
+                text = bmiMeasurement.bmiIndex.round(),
                 fontWeight = Bold
             )
         }
@@ -79,7 +80,7 @@ fun BmiContent(bmiMeasurement: BmiMeasurement) {
             style = MaterialTheme.typography.h5
         )
         Text(
-            text = bmiMeasurement.bmiDescription,
+            text = bmiMeasurement.diagnosis.description,
             style = MaterialTheme.typography.body2
         )
     }
@@ -92,7 +93,6 @@ fun BmiMeasurementElementPreview() {
     BmiElement(
         BmiMeasurement(
             0,
-            "Some description",
             0L,
             diagnosis = Diagnosis.NormalWeight,
             22f

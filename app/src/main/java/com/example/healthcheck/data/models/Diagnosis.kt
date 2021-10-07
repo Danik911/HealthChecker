@@ -14,14 +14,42 @@ import androidx.compose.ui.graphics.Color
 
 }*/
 
-enum class Diagnosis(val color: Color, val angle: Float) {
-    SevereUnderWeight(color = Color.Red, angle = 0.2f),
-    UnderWeight(color = Color.Yellow, angle = 0.3f),
-    NormalWeight(color = Color.Green, angle = 0.4f),
-    OverWeight(color = Color.Yellow, angle = 0.5f),
-    ObesityFirstStage(color = Color.Red, angle = 0.6f),
-    ObesitySecondStage(color = Color.Red, angle = 0.7f),
-    ObesityThirdStage(color = Color.Red, angle = 0.9f)
+enum class Diagnosis(val color: Color, val angle: Float, val description: String) {
+    SevereUnderWeight(
+        color = Color.Red,
+        angle = 0.2f,
+        description = "Your suffer from severe underweight"
+    ),
+    UnderWeight(
+        color = Color.Yellow,
+        angle = 0.3f,
+        description = "Your weight is lover than norm"
+    ),
+    NormalWeight(
+        color = Color.Green,
+        angle = 0.4f,
+        description = "Your weight is normal"
+    ),
+    OverWeight(
+        color = Color.Yellow,
+        angle = 0.5f,
+        description = "Your weight is higher than norm"
+    ),
+    ObesityFirstStage(
+        color = Color.Red,
+        angle = 0.6f,
+        description = "You suffer from first stage of obesity"
+    ),
+    ObesitySecondStage(
+        color = Color.Red,
+        angle = 0.7f,
+        description = "You suffer from second stage of obesity"
+    ),
+    ObesityThirdStage(
+        color = Color.Red,
+        angle = 0.9f,
+        description = "You suffer from third stage of obesity"
+    )
 
 
 }

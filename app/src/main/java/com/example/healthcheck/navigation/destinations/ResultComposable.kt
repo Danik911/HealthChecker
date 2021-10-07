@@ -13,13 +13,14 @@ import com.example.healthcheck.ui.screens.result_screen.ResultViewModel
 import com.example.healthcheck.util.Constants
 import com.example.healthcheck.util.Constants.RESULT_ARGUMENT_KEY
 import com.example.healthcheck.util.Constants.RESULT_SCREEN
+import com.example.healthcheck.util.Event
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 fun NavGraphBuilder.resultComposable(
     navigateToHomeScreen: () -> Unit,
-    navigateToListScreen: () -> Unit
+    navigateToListScreen: (Event) -> Unit
     ) {
     composable(
         route = RESULT_SCREEN,

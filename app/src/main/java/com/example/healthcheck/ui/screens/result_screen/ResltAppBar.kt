@@ -13,10 +13,11 @@ import com.example.healthcheck.R
 import com.example.healthcheck.ui.screens.param_screen.ParamScreen
 import com.example.healthcheck.ui.screens.param_screen.ParamViewModel
 import com.example.healthcheck.ui.theme.SMALL_PADDING
+import com.example.healthcheck.util.Event
 
 
 @Composable
-fun ResultAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
+fun ResultAppBar(navigateToHome: () -> Unit, navigateToList: (Event) -> Unit) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navigateToHome() }) {
@@ -29,7 +30,7 @@ fun ResultAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
         title = { Text(text = stringResource(id = R.string.result_app_bar)) },
         actions = {
             HistoryAction {
-               navigateToList()
+               navigateToList(Event.NO_EVENT)
             }
         }
 

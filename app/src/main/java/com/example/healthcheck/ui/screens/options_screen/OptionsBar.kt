@@ -15,12 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.healthcheck.R
 import com.example.healthcheck.ui.theme.LARGE_SPACER
 import com.example.healthcheck.ui.theme.SMALL_PADDING
+import com.example.healthcheck.util.Event
 
 
 @Composable
 fun OptionsAppBar(
     onAboutClicked: () -> Unit,
-    navigateToList: () -> Unit
+    navigateToList: (Event) -> Unit
 ) {
     TopAppBar(
         navigationIcon = {
@@ -71,7 +72,7 @@ fun AboutAction(
 }
 
 @Composable
-fun HistoryAction(navigateToList: () -> Unit) {
+fun HistoryAction(navigateToList: (Event) -> Unit) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -87,7 +88,7 @@ fun HistoryAction(navigateToList: () -> Unit) {
         ) {
             DropdownMenuItem(onClick = {
                 expanded = false
-                navigateToList()
+                navigateToList(Event.NO_EVENT)
             }
             ) {
 

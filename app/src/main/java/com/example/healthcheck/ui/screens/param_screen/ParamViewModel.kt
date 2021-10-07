@@ -29,8 +29,7 @@ class ParamViewModel @Inject constructor(
     private val _currentMeasurement: MutableStateFlow<BmiMeasurement> =
         MutableStateFlow(BmiMeasurement(
             5,
-            "",
-            23,
+            0L,
             Diagnosis.NormalWeight,
             0f
         ))
@@ -74,7 +73,6 @@ class ParamViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val diagnosis = getDiagnosis()
             _currentMeasurement.value = BmiMeasurement(
-                bmiDescription = diagnosis.name,
                 timestamp = System.currentTimeMillis(),
                 diagnosis = diagnosis,
                 bmiIndex = bmiResult.value

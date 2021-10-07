@@ -11,12 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.healthcheck.R
 import com.example.healthcheck.components.OptionsAppBar
 import com.example.healthcheck.ui.theme.*
+import com.example.healthcheck.util.Event
 import timber.log.Timber
 
 @Composable
 fun OptionsScreen(
     navigateToParamScreen: () -> Unit,
-    navigateToListScreen: () -> Unit
+    navigateToListScreen: (Event) -> Unit
 ) {
 
     LaunchedEffect(key1 = true) {

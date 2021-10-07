@@ -5,13 +5,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import com.example.healthcheck.ui.screens.options_screen.OptionsScreen
 import com.example.healthcheck.util.Constants.OPTIONS_SCREEN
+import com.example.healthcheck.util.Event
 import com.google.accompanist.navigation.animation.composable
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 fun NavGraphBuilder.optionComposable(
     navigateToParamScreen: () -> Unit,
-    navigateToListScreen: () -> Unit,
+    navigateToListScreen: (Event) -> Unit,
 
     ) {
     composable(

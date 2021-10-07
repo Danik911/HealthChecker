@@ -28,12 +28,13 @@ import com.example.healthcheck.data.models.Diagnosis
 import com.example.healthcheck.ui.theme.LARGE_SPACER
 import com.example.healthcheck.ui.theme.Pink200
 import com.example.healthcheck.ui.theme.SMALL_PADDING
+import com.example.healthcheck.util.Event
 import com.example.healthcheck.util.round
 
 @Composable
 fun ResultScreen(
     navigateToHomeScreen: () -> Unit,
-    navigateToListScreen: () -> Unit,
+    navigateToListScreen: (Event) -> Unit,
     viewModel: ResultViewModel = hiltViewModel()
 ) {
 
@@ -157,7 +158,6 @@ fun ContentResultScreenPreview() {
     ResultContent(
         BmiMeasurement(
             0,
-            "",
             0L,
             diagnosis = Diagnosis.NormalWeight,
             0f
