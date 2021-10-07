@@ -19,7 +19,8 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
-    navigateToBmiMeasurement: (bmiId: Int) -> Unit
+    navigateToBmiMeasurement: (bmiId: Int) -> Unit,
+    navigateToHome: () -> Unit
 ) {
     composable(
         route = Constants.LIST_SCREEN,
@@ -44,6 +45,9 @@ fun NavGraphBuilder.listComposable(
 
         }
 
-        ListScreen(navigateToBmiMeasurement = navigateToBmiMeasurement)
+        ListScreen(
+            navigateToBmiMeasurement = navigateToBmiMeasurement,
+            navigateToHome = navigateToHome
+        )
     }
 }

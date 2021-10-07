@@ -21,7 +21,10 @@ class Screens(navController: NavHostController) {
         navController.navigate(route = "result/$result")
     }
     val toList: (Event) -> Unit = { event ->
-        navController.navigate(route = "list/$event")
+        navController.navigate(route = "list/$event"){
+            popUpTo(PARAM_SCREEN)
+        }
+
     }
 
     val toDetails: (Int) -> Unit = { bmiId ->

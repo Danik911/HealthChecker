@@ -11,10 +11,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.healthcheck.R
+import com.example.healthcheck.components.DisplayAlertDialog
 import com.example.healthcheck.ui.theme.SMALL_PADDING
+import com.example.healthcheck.util.Event
 
 @Composable
-fun ListAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
+fun ListAppBar(navigateToHome: () -> Unit, viewModel: ListViewModel) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navigateToHome() }) {
@@ -26,9 +28,9 @@ fun ListAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
         },
         title = { Text(text = stringResource(id = R.string.list_app_bar_title)) },
         actions = {
-            DeleteAllAction {
-                navigateToList()
-            }
+            DeleteAllAlertDialog (onDeleteAllConfirmed = {
+                viewModel.deleteAllBmiMeasurements()
+            })
         }
 
     )
@@ -38,6 +40,7 @@ fun ListAppBar(navigateToHome: () -> Unit, navigateToList: () -> Unit) {
 @Composable
 fun DeleteAllAction(onDeleteAllClicked: () -> Unit) {
 
+
     IconButton(onClick = { onDeleteAllClicked() }) {
         Icon(
             imageVector = Icons.Filled.Delete,
@@ -45,6 +48,27 @@ fun DeleteAllAction(onDeleteAllClicked: () -> Unit) {
         )
     }
 }
+@Composable
+fun DeleteAllAlertDialog(onDeleteAllConfirmed: () -> Unit){
+
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+    DisplayAlertDialog(
+        title = stringResource(id = R.string.clear_history),
+        message = stringResource(id = R.string.delete_all_confirmation),
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = {
+            onDeleteAllConfirmed()
+        }
+    )
+    DeleteAllAction(onDeleteAllClicked = {openDialog = true})
+
+
+
+}
+
 @Composable
 @Preview
 private fun ListAppBarPreview() {

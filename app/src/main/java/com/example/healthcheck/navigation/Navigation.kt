@@ -37,6 +37,9 @@ fun Navigation(
             navigateToHomeScreen = screen.toOptions,
             navigateToListScreen = screen.toList
         )
-        listComposable(navigateToBmiMeasurement = screen.toDetails)
+        listComposable(
+            navigateToBmiMeasurement = screen.toDetails,
+            navigateToHome = screen.toOptions
+        )
     }
 }

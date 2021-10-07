@@ -3,6 +3,7 @@
     <string name="delete_all_icon">Delete all icon</string>
     <string name="choose_options">Check your health!</string>
     <string name="about_icon">About icon</string>
+    <string name="delete_rotated_icon">Delete rotated icon</string>
     <string name="about_app">About app</string>
     <string name="history_icon">History icon</string>
     <string name="history_drop_down">History</string>
@@ -19,5 +20,9 @@
     <string name="toast_invalid_parameters_fields">You should enter numbers</string>
     <string name="bmi_measurement_result">You result is %1$s\n Your BIM is %2$s</string>
     <string name="list_app_bar_title">List of results</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="clear_history">Clear history?</string>
+    <string name="delete_all_confirmation">Are you sure? All history will be deleted</string>
 
 </resources>

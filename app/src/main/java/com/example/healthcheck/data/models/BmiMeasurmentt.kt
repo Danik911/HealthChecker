@@ -7,7 +7,7 @@ import com.example.healthcheck.util.Constants.BMI_TABLE
 @Entity(tableName = BMI_TABLE)
 data class BmiMeasurement(
     @PrimaryKey(autoGenerate = true)
-    val BmiId: Int = 0,
+    val bmiId: Int = 0,
     val timestamp: Long,
     val diagnosis: Diagnosis,
     val bmiIndex: Float

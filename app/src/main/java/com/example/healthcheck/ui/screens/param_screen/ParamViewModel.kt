@@ -22,13 +22,13 @@ class ParamViewModel @Inject constructor(
 
     val highState: MutableState<String> = mutableStateOf("")
     val weightState: MutableState<String> = mutableStateOf("")
-    val description: MutableState<String> = mutableStateOf("")
+
 
     val bmiResult: MutableState<Float> = mutableStateOf(0f)
 
     private val _currentMeasurement: MutableStateFlow<BmiMeasurement> =
         MutableStateFlow(BmiMeasurement(
-            5,
+            0,
             0L,
             Diagnosis.NormalWeight,
             0f
@@ -80,7 +80,12 @@ class ParamViewModel @Inject constructor(
 
             repository.addBmiResult(bmiMeasurement = _currentMeasurement.value)
 
+
         }
 
+    }
+    fun resetBmiMeasurement(){
+       highState.value = ""
+        weightState.value = ""
     }
 }

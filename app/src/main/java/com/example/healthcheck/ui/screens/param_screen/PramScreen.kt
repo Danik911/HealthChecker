@@ -67,6 +67,7 @@ fun ParamScreen(
                             viewModel.calculateBmiIndex()
                             viewModel.addBmiMeasurement()
                             navigateToResultScreen(currentMeasurement.timestamp)
+                            viewModel.resetBmiMeasurement()
 
                         } else {
                             displayToastInvalid(context = context)
