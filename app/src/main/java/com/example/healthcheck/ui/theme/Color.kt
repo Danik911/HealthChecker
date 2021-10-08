@@ -11,6 +11,7 @@ val Pink700 = Color(0xFFbf5f82)
 val Purple500 = Color(0xFF9575cd)
 val Purple200 = Color(0xFFc7a4ff)
 val Purple700 = Color(0xFF65499c)
+val MediumGray = Color(0xFF9C9C9C)
 
 val HealthyWeight = Color(0xFF00C980)
 val LowOverWeight = Color(0xFFFFC114)

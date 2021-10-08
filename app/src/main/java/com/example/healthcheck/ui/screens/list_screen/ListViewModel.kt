@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val repository: BmiResultRepository
-): ViewModel() {
+) : ViewModel() {
 
     val event: MutableState<Event> = mutableStateOf(Event.NO_EVENT)
 
@@ -34,36 +34,57 @@ class ListViewModel @Inject constructor(
         MutableStateFlow<RequestState<List<BmiMeasurement>>>(RequestState.Idle)
     val allBmiMeasurement: StateFlow<RequestState<List<BmiMeasurement>>> = _allBmiMeasurements
 
-    fun getAllBmiMeasurements(){
+    fun getAllBmiMeasurements() {
         _allBmiMeasurements.value = RequestState.Loading
-        try{
+        try {
             viewModelScope.launch {
                 repository.getAllBmiResults.collect {
                     _allBmiMeasurements.value = RequestState.Success(it)
                 }
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             _allBmiMeasurements.value = RequestState.Error(error = e)
         }
     }
-    fun deleteAllBmiMeasurements(){
+
+    fun deleteAllBmiMeasurements() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllBmiResults()
         }
     }
-    fun deleteBmiMeasurement(bmiMeasurement: BmiMeasurement) {
-        viewModelScope.launch(Dispatchers.IO) {
+
+    fun deleteBmiMeasurement() {
+        viewModelScope.launch {
+            val bmiMeasurement = BmiMeasurement(
+                bmiId = bmiId.value,
+                timestamp = timestamp.value,
+                diagnosis = diagnosis.value,
+                bmiIndex = bmiIndex.value
+            )
             repository.deleteBmiResult(bmiMeasurement = bmiMeasurement)
         }
     }
 
-    fun handleEvent (event: Event){
-        when(event){
-            Event.DELETE ->{
+    private fun undoDeleteBmiMeasurement() {
+        viewModelScope.launch(Dispatchers.IO) {
 
+            val bmiMeasurement = BmiMeasurement(
+                timestamp = timestamp.value,
+                diagnosis = diagnosis.value,
+                bmiIndex = bmiIndex.value
+            )
+
+            repository.addBmiResult(bmiMeasurement = bmiMeasurement)
+        }
+    }
+
+    fun handleEvent(event: Event) {
+        when (event) {
+            Event.DELETE -> {
+                deleteBmiMeasurement()
             }
             Event.UNDO -> {
-
+                undoDeleteBmiMeasurement()
             }
             Event.UPDATE -> {
 
@@ -75,11 +96,17 @@ class ListViewModel @Inject constructor(
                 deleteAllBmiMeasurements()
             }
             else -> {
-                Event.NO_EVENT
+
             }
         }
-        this.event.value = Event.NO_EVENT
+
     }
 
+    fun updateBmiMeasurementFields(currentBmiMeasurement: BmiMeasurement){
+        bmiId.value = currentBmiMeasurement.bmiId
+        timestamp.value = currentBmiMeasurement.timestamp
+        bmiIndex.value = currentBmiMeasurement.bmiIndex
+        diagnosis.value = currentBmiMeasurement.diagnosis
+    }
 
 }

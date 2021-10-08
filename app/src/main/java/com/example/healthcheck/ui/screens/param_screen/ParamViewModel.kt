@@ -79,10 +79,7 @@ class ParamViewModel @Inject constructor(
             )
 
             repository.addBmiResult(bmiMeasurement = _currentMeasurement.value)
-
-
         }
-
     }
     fun resetBmiMeasurement(){
        highState.value = ""

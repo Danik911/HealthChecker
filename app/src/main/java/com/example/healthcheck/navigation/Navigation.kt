@@ -4,8 +4,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.healthcheck.navigation.destinations.*
+import com.example.healthcheck.ui.screens.list_screen.ListViewModel
 import com.example.healthcheck.util.Constants.SPLASH_SCREEN
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -14,6 +16,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 @Composable
 fun Navigation(
     navController: NavHostController,
+    listViewModel: ListViewModel = hiltViewModel()
 
     ) {
     val screen = remember(navController) {
@@ -39,7 +42,8 @@ fun Navigation(
         )
         listComposable(
             navigateToBmiMeasurement = screen.toDetails,
-            navigateToHome = screen.toOptions
+            navigateToHome = screen.toOptions,
+            viewModel = listViewModel
         )
     }
 }

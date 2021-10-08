@@ -22,7 +22,11 @@
     <string name="list_app_bar_title">List of results</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="sad_face_icon">Sad face icon</string>
     <string name="clear_history">Clear history?</string>
+    <string name="no_history_text">You don\'t have any history yet</string>
     <string name="delete_all_confirmation">Are you sure? All history will be deleted</string>
+    <string name="label_message_delete">Bmi measurement has been deleted</string>
+    <string name="label_message_restored">Bmi measurement has been restored</string>
 
 </resources>

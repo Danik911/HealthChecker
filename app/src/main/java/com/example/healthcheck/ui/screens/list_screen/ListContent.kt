@@ -20,17 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.healthcheck.R
 import com.example.healthcheck.components.BmiElement
 import com.example.healthcheck.data.models.BmiMeasurement
-import com.example.healthcheck.data.models.Diagnosis
-import com.example.healthcheck.ui.theme.LARGE_SPACER
+import com.example.healthcheck.ui.theme.MEDIUM_PADDING
 import com.example.healthcheck.util.Event
 import com.example.healthcheck.util.RequestState
 import kotlinx.coroutines.delay
@@ -42,8 +38,8 @@ import kotlinx.coroutines.launch
 fun ListContent(
     measurements: RequestState<List<BmiMeasurement>>,
     navigateToBmiMeasurement: (bmiId: Int) -> Unit,
-    onSwipeToDelete: (BmiMeasurement) -> Unit,
-    viewModel: ListViewModel
+    onSwipeToDelete: (BmiMeasurement, Event) -> Unit,
+
 ) {
 
     if (measurements is RequestState.Success) {
@@ -63,64 +59,68 @@ fun ListContent(
 fun DisplayMeasurements(
     measurements: List<BmiMeasurement>,
     navigateToBmiMeasurement: (bmiId: Int) -> Unit,
-    onSwipeToDelete: (BmiMeasurement) -> Unit
+    onSwipeToDelete: (BmiMeasurement, Event) -> Unit
 ) {
-
-
-    LazyColumn {
-        items(
-            items = measurements,
-            key = { item: BmiMeasurement ->
-                item.bmiId
-            }
-        ) { item ->
-            val dismissState = rememberDismissState()
-            val dismissDirection = dismissState.dismissDirection
-            val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
-            if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-                val scope = rememberCoroutineScope()
-                scope.launch {
-                    delay(300)
-                    onSwipeToDelete(item)
-
+    if (measurements.isEmpty()) {
+        EmptyListContent()
+    } else {
+        LazyColumn {
+            items(
+                items = measurements,
+                key = { item: BmiMeasurement ->
+                    item.bmiId
                 }
-            }
-            val degrees by animateFloatAsState(
-                if (dismissState.targetValue == DismissValue.Default) 0f
-                else -45f
-            )
-            var itemAppeared by remember {
-                mutableStateOf(false)
-            }
-            LaunchedEffect(key1 = true) {
-                itemAppeared = true
-            }
-            AnimatedVisibility(
-                visible = itemAppeared && !isDismissed,
-                enter = expandVertically(
-                    animationSpec = tween(
-                        durationMillis = 300
-                    )
-                ),
-                exit = shrinkVertically(
-                    animationSpec = tween(
-                        durationMillis = 300
-                    )
-                )
-            ) {
-                SwipeToDismiss(
-                    state = dismissState,
-                    directions = setOf(DismissDirection.EndToStart),
-                    dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
-                    background = { DismissBackground(degrees = degrees) }) {
+            ) { item ->
+                val dismissState = rememberDismissState()
+                val dismissDirection = dismissState.dismissDirection
+                val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+                if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
+                    val scope = rememberCoroutineScope()
+                    scope.launch {
+                        delay(300)
+                        onSwipeToDelete(item, Event.DELETE)
 
-                    BmiElement(
-                        bmiMeasurement = item
+                    }
+                }
+                val degrees by animateFloatAsState(
+                    if (dismissState.targetValue == DismissValue.Default) 0f
+                    else -45f
+                )
+                var itemAppeared by remember {
+                    mutableStateOf(false)
+                }
+                LaunchedEffect(key1 = true) {
+                    itemAppeared = true
+                }
+                AnimatedVisibility(
+                    visible = itemAppeared && !isDismissed,
+                    enter = expandVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
+                    ),
+                    exit = shrinkVertically(
+                        animationSpec = tween(
+                            durationMillis = 300
+                        )
                     )
+                ) {
+                    SwipeToDismiss(
+                        state = dismissState,
+                        directions = setOf(DismissDirection.EndToStart),
+                        dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
+                        background = { DismissBackground(degrees = degrees) }) {
+
+                        BmiElement(
+                            bmiMeasurement = item
+                        )
+                    }
                 }
             }
         }
     }
+
+
 }
 
 @Composable
@@ -135,7 +135,9 @@ fun DismissBackground(degrees: Float) {
         contentAlignment = Alignment.CenterEnd
     ) {
         Icon(
-            modifier = Modifier.rotate(degrees = degrees),
+            modifier = Modifier
+                .rotate(degrees = degrees)
+                .padding(end = MEDIUM_PADDING),
             imageVector = Icons.Filled.Delete,
             contentDescription = stringResource(id = R.string.delete_rotated_icon),
             tint = Color.White

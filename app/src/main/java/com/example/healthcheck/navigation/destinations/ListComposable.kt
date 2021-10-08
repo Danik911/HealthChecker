@@ -5,10 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.navArgument
 import com.example.healthcheck.ui.screens.list_screen.ListScreen
+import com.example.healthcheck.ui.screens.list_screen.ListViewModel
 import com.example.healthcheck.ui.screens.result_screen.ResultScreen
 import com.example.healthcheck.util.Constants
 import com.example.healthcheck.util.Constants.LIST_ARGUMENT_KEY
@@ -20,17 +23,18 @@ import com.google.accompanist.navigation.animation.composable
 @ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
     navigateToBmiMeasurement: (bmiId: Int) -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    viewModel: ListViewModel
 ) {
     composable(
         route = Constants.LIST_SCREEN,
-        arguments = listOf(navArgument(LIST_ARGUMENT_KEY){
+        arguments = listOf(navArgument(LIST_ARGUMENT_KEY) {
             type = NavType.StringType
         }),
 
-        enterTransition = {_, _ ->
+        enterTransition = { _, _ ->
             slideInHorizontally(
-                initialOffsetX = {fullWidth -> fullWidth },
+                initialOffsetX = { fullWidth -> fullWidth },
                 animationSpec = tween(
                     durationMillis = 300
                 )
@@ -41,13 +45,17 @@ fun NavGraphBuilder.listComposable(
     ) { navBackStackEntry ->
 
         val event = navBackStackEntry.arguments?.getString(LIST_ARGUMENT_KEY).toEvent()
-        LaunchedEffect(key1 = event){
 
+        LaunchedEffect(key1 = event) {
+            viewModel.event.value = event
         }
+        val passedEvent by viewModel.event
 
         ListScreen(
             navigateToBmiMeasurement = navigateToBmiMeasurement,
-            navigateToHome = navigateToHome
+            navigateToHome = navigateToHome,
+            viewModel = viewModel,
+            event = passedEvent
         )
     }
 }
