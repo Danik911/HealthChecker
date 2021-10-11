@@ -1,22 +1,26 @@
 package com.example.healthcheck.ui.screens.list_screen
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.healthcheck.R
 import com.example.healthcheck.components.DisplayAlertDialog
-import com.example.healthcheck.ui.theme.SMALL_PADDING
-import com.example.healthcheck.util.Event
+import com.example.healthcheck.components.SortByBmiItem
+import com.example.healthcheck.components.SortByDateItem
+import com.example.healthcheck.components.SortByNoPriorityItem
+import com.example.healthcheck.util.SortOrder
 
 @Composable
-fun ListAppBar(navigateToHome: () -> Unit, viewModel: ListViewModel) {
+fun ListAppBar(
+    navigateToHome: () -> Unit,
+    viewModel: ListViewModel
+) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navigateToHome() }) {
@@ -28,6 +32,7 @@ fun ListAppBar(navigateToHome: () -> Unit, viewModel: ListViewModel) {
         },
         title = { Text(text = stringResource(id = R.string.list_app_bar_title)) },
         actions = {
+            SortAction(onSortClicked = { viewModel.persistSortState(it) } )
             DeleteAllAlertDialog (onDeleteAllConfirmed = {
                 viewModel.deleteAllBmiMeasurements()
             })
@@ -68,9 +73,51 @@ fun DeleteAllAlertDialog(onDeleteAllConfirmed: () -> Unit){
 
 
 }
+@Composable
+fun SortAction(onSortClicked: (SortOrder) -> Unit){
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    IconButton(onClick = { expanded = true}) {
+        Icon(painter = painterResource(
+            id = R.drawable.ic_filter_list),
+            contentDescription = stringResource(id = R.string.sort_icon)
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                onSortClicked(SortOrder.BY_BMI)
+            }) {
+
+                SortByBmiItem()
+            }
+            DropdownMenuItem(onClick = {
+                expanded = false
+                onSortClicked(SortOrder.BY_DATE)
+            }) {
+
+                SortByDateItem()
+            }
+            DropdownMenuItem(onClick = {
+                expanded = false
+                onSortClicked(SortOrder.NONE)
+            }) {
+
+                SortByNoPriorityItem()
+
+            }
+
+        }
+    }
+
+}
 
 @Composable
 @Preview
 private fun ListAppBarPreview() {
-   ListAppBarPreview()
+    val viewModel: ListViewModel = hiltViewModel()
+    ListAppBar({},viewModel = viewModel)
 }

@@ -28,5 +28,12 @@
     <string name="delete_all_confirmation">Are you sure? All history will be deleted</string>
     <string name="label_message_delete">Bmi measurement has been deleted</string>
     <string name="label_message_restored">Bmi measurement has been restored</string>
+    <string name="sort_icon">Sort icon</string>
+    <string name="timer_icon">Timer icon</string>
+    <string name="sot_by_bmi_icon">Sort by BMI icon</string>
+    <string name="sot_by_no_priority_icon">Sort by no priority icon</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_bmi">Sort by BMI</string>
+    <string name="sort_by_no_priority">No sort priorities</string>
 
 </resources>

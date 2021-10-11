@@ -10,6 +10,8 @@ import javax.inject.Inject
 class BmiResultRepository @Inject constructor(private val bmiDao: BmiDao){
 
     val getAllBmiResults: Flow<List<BmiMeasurement>> = bmiDao.getAllBmiResults()
+    val getBmiSortedByIndexAsc: Flow<List<BmiMeasurement>> = bmiDao.getBmiSortedByIndexAsc()
+    val getBmiSortedByDateAsc: Flow<List<BmiMeasurement>> = bmiDao.getBmiSortedByDateAsc()
 
     val getTheLatestBmiMeasurement: Flow<BmiMeasurement> = bmiDao.getTheLatestBmiMeasurement()
 

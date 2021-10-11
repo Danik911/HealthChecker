@@ -29,6 +29,7 @@ import com.example.healthcheck.data.models.BmiMeasurement
 import com.example.healthcheck.ui.theme.MEDIUM_PADDING
 import com.example.healthcheck.util.Event
 import com.example.healthcheck.util.RequestState
+import com.example.healthcheck.util.SortOrder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -39,17 +40,43 @@ fun ListContent(
     measurements: RequestState<List<BmiMeasurement>>,
     navigateToBmiMeasurement: (bmiId: Int) -> Unit,
     onSwipeToDelete: (BmiMeasurement, Event) -> Unit,
+    sortState: RequestState<SortOrder>,
+    bmiSortedByDate: List<BmiMeasurement>,
+    bmiSortedByIndex: List<BmiMeasurement>
 
 ) {
 
-    if (measurements is RequestState.Success) {
-        DisplayMeasurements(
-            measurements = measurements.data,
-            navigateToBmiMeasurement = navigateToBmiMeasurement,
-            onSwipeToDelete = onSwipeToDelete
-        )
-    }
+    if (sortState is RequestState.Success) {
+        when (sortState.data) {
+            SortOrder.NONE -> {
+                if (measurements is RequestState.Success) {
+                    DisplayMeasurements(
+                        measurements = measurements.data,
+                        navigateToBmiMeasurement = navigateToBmiMeasurement,
+                        onSwipeToDelete = onSwipeToDelete
+                    )
+                }
+            }
+            SortOrder.BY_DATE -> {
 
+                DisplayMeasurements(
+                    measurements = bmiSortedByDate,
+                    navigateToBmiMeasurement = navigateToBmiMeasurement,
+                    onSwipeToDelete = onSwipeToDelete
+                )
+
+
+            }
+            SortOrder.BY_BMI -> {
+                DisplayMeasurements(
+                    measurements = bmiSortedByIndex,
+                    navigateToBmiMeasurement = navigateToBmiMeasurement,
+                    onSwipeToDelete = onSwipeToDelete
+                )
+            }
+        }
+
+    }
 
 }
 
@@ -109,18 +136,17 @@ fun DisplayMeasurements(
                         state = dismissState,
                         directions = setOf(DismissDirection.EndToStart),
                         dismissThresholds = { FractionalThreshold(fraction = 0.2f) },
-                        background = { DismissBackground(degrees = degrees) }) {
-
-                        BmiElement(
-                            bmiMeasurement = item
-                        )
-                    }
+                        background = { DismissBackground(degrees = degrees) },
+                        dismissContent = {
+                            BmiElement(
+                                bmiMeasurement = item
+                            )
+                        }
+                    )
                 }
             }
         }
     }
-
-
 }
 
 @Composable

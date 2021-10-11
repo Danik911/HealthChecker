@@ -26,6 +26,12 @@ interface BmiDao {
     @Query("SELECT * FROM bmi_table ORDER BY timestamp DESC LIMIT 1")
     fun getTheLatestBmiMeasurement(): Flow<BmiMeasurement>
 
+    @Query("SELECT * FROM bmi_table ORDER BY bmiIndex")
+    fun getBmiSortedByIndexAsc(): Flow<List<BmiMeasurement>>
+
+    @Query("SELECT * FROM bmi_table ORDER BY timestamp")
+    fun getBmiSortedByDateAsc(): Flow<List<BmiMeasurement>>
+
 
 
 }

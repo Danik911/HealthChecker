@@ -7,20 +7,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.healthcheck.data.models.BmiMeasurement
 import com.example.healthcheck.data.models.Diagnosis
 import com.example.healthcheck.data.repositories.BmiResultRepository
+import com.example.healthcheck.data.repositories.DataStoreRepository
 import com.example.healthcheck.util.Event
 import com.example.healthcheck.util.RequestState
+import com.example.healthcheck.util.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val repository: BmiResultRepository
+    private val repository: BmiResultRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     val event: MutableState<Event> = mutableStateOf(Event.NO_EVENT)
@@ -33,6 +34,50 @@ class ListViewModel @Inject constructor(
     private val _allBmiMeasurements =
         MutableStateFlow<RequestState<List<BmiMeasurement>>>(RequestState.Idle)
     val allBmiMeasurement: StateFlow<RequestState<List<BmiMeasurement>>> = _allBmiMeasurements
+
+    private val  _sortState =
+        MutableStateFlow<RequestState<SortOrder>>(RequestState.Idle)
+    val sortState: StateFlow<RequestState<SortOrder>> = _sortState
+
+    init {
+        getAllBmiMeasurements()
+        readSortState()
+    }
+
+    private fun readSortState(){
+        _sortState.value = RequestState.Loading
+        try {
+            viewModelScope.launch {
+                dataStoreRepository.readSortState
+                    .map { SortOrder.valueOf(it) }
+                    .collect {
+                        _sortState.value = RequestState.Success(it)
+                    }
+            }
+        } catch (e: Exception){
+            _sortState.value = RequestState.Error(error = e)
+        }
+    }
+    fun persistSortState(sortOrder: SortOrder){
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.persistSortState(sortOrder = sortOrder)
+        }
+    }
+
+    val bmiSortedByIndex: StateFlow<List<BmiMeasurement>> =
+        repository.getBmiSortedByIndexAsc.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = emptyList()
+        )
+
+    val bmiSortedByDate: StateFlow<List<BmiMeasurement>> =
+        repository.getBmiSortedByDateAsc.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = emptyList()
+        )
+
 
     fun getAllBmiMeasurements() {
         _allBmiMeasurements.value = RequestState.Loading

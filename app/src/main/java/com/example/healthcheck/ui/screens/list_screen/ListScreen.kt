@@ -22,15 +22,16 @@ fun ListScreen(
     event: Event
 ) {
 
-    LaunchedEffect(key1 = true) {
-        viewModel.getAllBmiMeasurements()
-    }
+
     LaunchedEffect(key1 = event) {
         viewModel.handleEvent(event = event)
     }
 
 
     val allBmiMeasurement by viewModel.allBmiMeasurement.collectAsState()
+    val sortState by viewModel.sortState.collectAsState()
+    val bmiSortedByDate by viewModel.bmiSortedByDate.collectAsState()
+    val bmiSortedByIndex by viewModel.bmiSortedByIndex.collectAsState()
     val scaffoldState = rememberScaffoldState()
     Timber.d("$event")
 
@@ -57,9 +58,13 @@ fun ListScreen(
                 onSwipeToDelete = { bmiMeasurement, event ->
                     viewModel.event.value = event
                     viewModel.updateBmiMeasurementFields(currentBmiMeasurement = bmiMeasurement)
+                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
 
 
-                }
+                },
+                sortState = sortState,
+                bmiSortedByDate = bmiSortedByDate,
+                bmiSortedByIndex = bmiSortedByIndex
 
             )
         }

@@ -16,4 +16,8 @@ object Constants {
     const val RESULT_ARGUMENT_KEY = "bmi"
     const val DETAILS_ARGUMENT_KEY = "bmiId"
     const val LIST_ARGUMENT_KEY = "event"
+
+    const val PREFERENCE_NAME = "healthCheck_preferences"
+    const val DATE_PREFERENCE_KEY = "sort_state"
+
 }
