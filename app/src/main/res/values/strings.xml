@@ -6,6 +6,7 @@
     <string name="delete_rotated_icon">Delete rotated icon</string>
     <string name="about_app">About app</string>
     <string name="history_icon">History icon</string>
+    <string name="share_icon">Share icon</string>
     <string name="history_drop_down">History</string>
     <string name="options_screen_text">You may choose one of the available tests</string>
     <string name="bmi_button_text">Check you BMI</string>
@@ -20,6 +21,7 @@
     <string name="toast_invalid_parameters_fields">You should enter numbers</string>
     <string name="bmi_measurement_result">You result is %1$s\n Your BIM is %2$s</string>
     <string name="list_app_bar_title">List of results</string>
+    <string name="details_app_bar_title">Details</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="sad_face_icon">Sad face icon</string>
@@ -35,5 +37,6 @@
     <string name="sort_by_date">Sort by date</string>
     <string name="sort_by_bmi">Sort by BMI</string>
     <string name="sort_by_no_priority">No sort priorities</string>
+    <string name="back_icon">Back icon</string>
 
 </resources>

@@ -42,12 +42,6 @@ fun NavGraphBuilder.detailsComposable(
         }
         val selectedBmiMeasurement by viewModel.selectedBmiMeasurement.collectAsState()
 
-        LaunchedEffect(key1 = selectedBmiMeasurement) {
-            if (selectedBmiMeasurement != null || bmiId == -1) {
-                //sharedViewModel.updateTaskFields(selectedTask = selectedTask)
-            }
-        }
-
         DetailScreen()
     }
 }

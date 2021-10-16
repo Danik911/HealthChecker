@@ -1,10 +1,13 @@
 package com.example.healthcheck.ui.screens.list_screen
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,8 +35,8 @@ fun ListAppBar(
         },
         title = { Text(text = stringResource(id = R.string.list_app_bar_title)) },
         actions = {
-            SortAction(onSortClicked = { viewModel.persistSortState(it) } )
-            DeleteAllAlertDialog (onDeleteAllConfirmed = {
+            SortAction(onSortClicked = { viewModel.persistSortState(it) })
+            DeleteAllAlertDialog(onDeleteAllConfirmed = {
                 viewModel.deleteAllBmiMeasurements()
             })
         }
@@ -53,8 +56,9 @@ fun DeleteAllAction(onDeleteAllClicked: () -> Unit) {
         )
     }
 }
+
 @Composable
-fun DeleteAllAlertDialog(onDeleteAllConfirmed: () -> Unit){
+fun DeleteAllAlertDialog(onDeleteAllConfirmed: () -> Unit) {
 
     var openDialog by remember {
         mutableStateOf(false)
@@ -68,20 +72,28 @@ fun DeleteAllAlertDialog(onDeleteAllConfirmed: () -> Unit){
             onDeleteAllConfirmed()
         }
     )
-    DeleteAllAction(onDeleteAllClicked = {openDialog = true})
-
+    DeleteAllAction(onDeleteAllClicked = { openDialog = true })
 
 
 }
+
 @Composable
-fun SortAction(onSortClicked: (SortOrder) -> Unit){
+fun SortAction(onSortClicked: (SortOrder) -> Unit) {
+
+
     var expanded by remember {
         mutableStateOf(false)
     }
-    IconButton(onClick = { expanded = true}) {
-        Icon(painter = painterResource(
-            id = R.drawable.ic_filter_list),
-            contentDescription = stringResource(id = R.string.sort_icon)
+    val degrees by animateFloatAsState(
+        if (expanded) 180f
+        else 0f
+    )
+
+    IconButton(onClick = { expanded = true }) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_filter_list),
+            contentDescription = stringResource(id = R.string.sort_icon),
+            modifier = Modifier.rotate(degrees = degrees)
         )
         DropdownMenu(
             expanded = expanded,
@@ -119,5 +131,5 @@ fun SortAction(onSortClicked: (SortOrder) -> Unit){
 @Preview
 private fun ListAppBarPreview() {
     val viewModel: ListViewModel = hiltViewModel()
-    ListAppBar({},viewModel = viewModel)
+    ListAppBar({}, viewModel = viewModel)
 }

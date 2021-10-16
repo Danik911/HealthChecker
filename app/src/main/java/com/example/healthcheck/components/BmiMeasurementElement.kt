@@ -15,31 +15,51 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.healthcheck.data.models.BmiMeasurement
 import com.example.healthcheck.data.models.Diagnosis
-import com.example.healthcheck.ui.theme.SMALL_PADDING
-import com.example.healthcheck.ui.theme.SMALL_SPACER
+import com.example.healthcheck.ui.theme.*
 import com.example.healthcheck.util.round
 
 @Composable
-fun BmiElement(bmiMeasurement: BmiMeasurement) {
+fun BmiElement(bmiMeasurement: BmiMeasurement, bmiContent: @Composable () -> Unit ) {
     Card(
         modifier = Modifier
-            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+            .padding(
+                top = MEDIUM_PADDING,
+                bottom = SMALL_PADDING,
+                start = SMALL_SPACER,
+                end = SMALL_SPACER
+            )
             .fillMaxWidth()
             .wrapContentHeight(align = Alignment.Top),
-        elevation = 8.dp,
+        elevation = MEDIUM_PADDING,
         backgroundColor = Color.White
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-           BmiIndex(bmiMeasurement = bmiMeasurement)
-            BmiContent(bmiMeasurement = bmiMeasurement)
-            
+
+            EmptyBmiElement(
+
+                bmiIndex = { BmiIndex(bmiMeasurement = bmiMeasurement) },
+                bmiContent = { BmiContent(bmiMeasurement = bmiMeasurement)}
+            )
+
         }
 
     }
+
+
+@Composable
+fun EmptyBmiElement(
+
+    bmiIndex: @Composable () -> Unit,
+    bmiContent: @Composable () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ){
+        bmiIndex()
+        bmiContent()
+    }
+
 }
 
 @Composable
@@ -47,13 +67,13 @@ fun BmiIndex(bmiMeasurement: BmiMeasurement) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
-            width = 2.dp,
+            width = SMALLEST_PADDING,
             color = bmiMeasurement.diagnosis.color,
 
             ),
         modifier = Modifier
             .padding(SMALL_SPACER)
-            .size(72.dp),
+            .size(BMI_ELEMENT_SIZE),
         elevation = SMALL_PADDING,
 
         ) {
@@ -97,5 +117,5 @@ fun BmiMeasurementElementPreview() {
             diagnosis = Diagnosis.NormalWeight,
             22f
         )
-    )
+    ){}
 }

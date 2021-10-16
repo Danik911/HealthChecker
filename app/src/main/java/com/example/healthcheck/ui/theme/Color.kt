@@ -17,6 +17,8 @@ val HealthyWeight = Color(0xFF00C980)
 val LowOverWeight = Color(0xFFFFC114)
 val Obesity = Color(0XFFFF4646)
 
+val Dots = Color(0xFF03045e)
+
 val Colors.surfaceColor: Color
     @Composable
     get() = if (isLight) Pink200 else Purple700

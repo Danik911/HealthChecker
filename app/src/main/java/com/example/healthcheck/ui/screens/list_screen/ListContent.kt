@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.healthcheck.R
+import com.example.healthcheck.components.BmiContent
 import com.example.healthcheck.components.BmiElement
 import com.example.healthcheck.data.models.BmiMeasurement
 import com.example.healthcheck.ui.theme.MEDIUM_PADDING
@@ -139,7 +140,8 @@ fun DisplayMeasurements(
                         background = { DismissBackground(degrees = degrees) },
                         dismissContent = {
                             BmiElement(
-                                bmiMeasurement = item
+                                bmiMeasurement = item,
+                                bmiContent = { BmiContent(bmiMeasurement = item) }
                             )
                         }
                     )
@@ -168,7 +170,6 @@ fun DismissBackground(degrees: Float) {
             contentDescription = stringResource(id = R.string.delete_rotated_icon),
             tint = Color.White
         )
-
 
     }
 
